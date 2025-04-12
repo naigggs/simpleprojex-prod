@@ -1,6 +1,6 @@
 "use client";
 
-import { useState, useEffect } from "react";
+import { useState, useEffect, Suspense } from "react";
 import { useRouter, useSearchParams } from "next/navigation";
 
 import {
@@ -18,7 +18,7 @@ import ProposalGridView from "@/components/ui/proposals/proposal-grid-view";
 import ProposalListView from "@/components/ui/proposals/proposal-list-view";
 import Link from "next/link";
 
-export default function ProposalPage() {
+function ProposalContent() {
   const router = useRouter();
   const searchParams = useSearchParams();
   const viewParam = searchParams.get("view");
@@ -93,5 +93,13 @@ export default function ProposalPage() {
         </div>
       </Tabs>
     </div>
+  );
+}
+
+export default function ProposalPage() {
+  return (
+    <Suspense fallback={<div className="container mx-auto px-4 py-8">Loading proposals...</div>}>
+      <ProposalContent />
+    </Suspense>
   );
 }
