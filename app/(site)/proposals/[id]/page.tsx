@@ -1,6 +1,6 @@
 "use client";
 
-import { useEffect, useState, use } from "react";
+import { useEffect, useState, use, Suspense } from "react";
 import { useRouter, useSearchParams } from "next/navigation";
 import { getProposalById } from "@/hooks/api/proposals/get-proposal-by-id";
 import {
@@ -34,7 +34,7 @@ import Image from "next/image";
 import ProposalDetailTab from "@/components/ui/proposals/proposal-detail/proposal-detail-tab";
 import ContractDetailTab from "@/components/ui/proposals/proposal-detail/contract-detail-tab";
 
-export default function ProposalDetailPage({
+function ProposalDetailContent({
   params,
 }: {
   params: Promise<{ id: string }>;
@@ -207,5 +207,17 @@ export default function ProposalDetailPage({
         </div>
       </div>
     </div>
+  );
+}
+
+export default function ProposalDetailPage({
+  params,
+}: {
+  params: Promise<{ id: string }>;
+}) {
+  return (
+    <Suspense fallback={<div className="container mx-auto px-4 py-8">Loading proposal details...</div>}>
+      <ProposalDetailContent params={params} />
+    </Suspense>
   );
 }
